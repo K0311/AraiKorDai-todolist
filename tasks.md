@@ -29,12 +29,12 @@ Stored in `todos.json`. Note that `id` must be unique (UUID).
 
 ## Development Tasks
 
-- [ ] **1. Project Initialization & Data Models**
+- [x] **1. Project Initialization & Data Models**
     - Create `main.py` as the entry point.
     - Create a `models.py` file.
     - Define a `TodoItem` class (using dataclasses or Pydantic) containing the fields defined in the Todo Schema above.
     - Create Python `Enum` classes for Priority (HIGH, MID, LOW) and Status (PENDING, COMPLETED) to ensure consistency.
 
-- [ ] **2. CLI Interface - Basic Interaction**
+- [x] **2. CLI Interface - Basic Interaction**
     - Implement a main application loop.
     - Create a "Pre-Login" menu: Options for [1] Login, [2] Sign Up, [3] Exit.
