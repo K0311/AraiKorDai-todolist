@@ -34,6 +34,7 @@ class TodoItem:
     id: str = field(default_factory=lambda: str(uuid4()))
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
     updated_at: str = field(default_factory=lambda: datetime.now().isoformat())
+    due_date: Optional[str] = None
 
     def to_dict(self) -> dict:
         """Convert TodoItem to dictionary for JSON serialization."""
@@ -46,6 +47,7 @@ class TodoItem:
             "owner": self.owner,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
+            "due_date": self.due_date,
         }
 
     @classmethod
@@ -60,4 +62,5 @@ class TodoItem:
             owner=data["owner"],
             created_at=data["created_at"],
             updated_at=data["updated_at"],
+            due_date=data.get("due_date"),
         )
