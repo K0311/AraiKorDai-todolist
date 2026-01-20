@@ -2,7 +2,6 @@
 
 import json
 import os
-from pathlib import Path
 from typing import Optional
 
 from models import TodoItem, Priority, Status
@@ -82,9 +81,7 @@ class TodoManager:
     def get_user_todos(self, username: str) -> list:
         """Get all todos for a user."""
         todos = self._load_todos()
-        return [
-            TodoItem.from_dict(todo) for todo in todos if todo["owner"] == username
-        ]
+        return [TodoItem.from_dict(todo) for todo in todos if todo["owner"] == username]
 
     def get_todo_by_id(self, todo_id: str, username: str) -> Optional[TodoItem]:
         """Get a specific todo by ID for the user."""
@@ -203,10 +200,8 @@ class App:
             print("Title cannot be empty.")
             return
         details = input("Enter todo details (optional): ").strip()
-        priority_str = (
-            input("Enter priority (HIGH/MID/LOW): ").strip().upper()
-        )
-        
+        priority_str = input("Enter priority (HIGH/MID/LOW): ").strip().upper()
+
         try:
             priority = Priority(priority_str)
         except ValueError:
@@ -250,7 +245,6 @@ class App:
                 print(f"   Details: {todo.details}")
             print(f"   Created: {todo.created_at}")
 
-
     def handle_view_todo_details(self) -> None:
         """Handle viewing detailed information of a specific todo."""
         todos = self.todo_manager.get_user_todos(self.current_user)
@@ -267,7 +261,7 @@ class App:
             choice = int(input("\nEnter the number of the todo to view: ").strip())
             if 1 <= choice <= len(todos):
                 todo = todos[choice - 1]
-                print(f"\n=== TODO DETAILS ===")
+                print("\n=== TODO DETAILS ===")
                 print(f"ID: {todo.id}")
                 print(f"Title: {todo.title}")
                 print(f"Details: {todo.details}")
@@ -282,7 +276,6 @@ class App:
                 print("Invalid selection.")
         except ValueError:
             print("Please enter a valid number.")
-
 
     def handle_edit_todo(self) -> None:
         """Handle editing a todo item."""
@@ -301,34 +294,37 @@ class App:
             if 1 <= choice <= len(todos):
                 todo = todos[choice - 1]
                 print(f"\nEditing: {todo.title}")
-                
+
                 # Edit title
                 new_title = input(f"Title [{todo.title}]: ").strip()
                 if new_title:
                     todo.title = new_title
-                
+
                 # Edit details
                 new_details = input(f"Details [{todo.details}]: ").strip()
                 if new_details or new_details == "":
                     todo.details = new_details
-                
+
                 # Edit priority
-                new_priority_str = input(f"Priority [{todo.priority.value}]: ").strip().upper()
+                new_priority_str = (
+                    input(f"Priority [{todo.priority.value}]: ").strip().upper()
+                )
                 if new_priority_str:
                     try:
                         todo.priority = Priority(new_priority_str)
                     except ValueError:
                         print("Invalid priority. Keeping current.")
-                
+
                 # Edit due date
                 new_due_date = input(f"Due Date [{todo.due_date or 'None'}]: ").strip()
                 if new_due_date or new_due_date == "":
                     todo.due_date = new_due_date if new_due_date else None
-                
+
                 # Update timestamp
                 from datetime import datetime
+
                 todo.updated_at = datetime.now().isoformat()
-                
+
                 if self.todo_manager.update_todo(todo):
                     print("Todo updated successfully!")
                 else:
@@ -337,7 +333,6 @@ class App:
                 print("Invalid selection.")
         except ValueError:
             print("Please enter a valid number.")
-
 
     def handle_mark_completed(self) -> None:
         """Handle marking a todo as completed."""
@@ -355,7 +350,9 @@ class App:
                 print(f"{i}. {todo.title} (Already completed)")
 
         try:
-            choice = int(input("\nEnter the number of the todo to mark as completed: ").strip())
+            choice = int(
+                input("\nEnter the number of the todo to mark as completed: ").strip()
+            )
             if 1 <= choice <= len(todos):
                 todo = todos[choice - 1]
                 if todo.status == Status.COMPLETED:
@@ -363,6 +360,7 @@ class App:
                 else:
                     todo.status = Status.COMPLETED
                     from datetime import datetime
+
                     todo.updated_at = datetime.now().isoformat()
                     if self.todo_manager.update_todo(todo):
                         print("Todo marked as completed!")
